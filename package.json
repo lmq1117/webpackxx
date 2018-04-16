@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/lmq1117/webpackxx/issues"
   },
-  "homepage": "https://github.com/lmq1117/webpackxx#readme"
+  "homepage": "https://github.com/lmq1117/webpackxx#readme",
+  "devDependencies": {
+    "webpack": "^4.5.0"
+  }
 }
