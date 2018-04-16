@@ -1,6 +1,6 @@
 //Greeter.js
 module.exports = function () {
 	var greet = document.createElement('div');
-	greet.textContent = "Hi there and greetings 2!";
+	greet.textContent = "Hi there and greetings 3 !";
 	return greet;
 };
