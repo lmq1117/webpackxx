@@ -1,5 +1,19 @@
 {
-  "devDependencies": {
-    "webpack": "^4.5.0"
-  }
+  "name": "webpackxx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmq1117/webpackxx.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lmq1117/webpackxx/issues"
+  },
+  "homepage": "https://github.com/lmq1117/webpackxx#readme"
 }
