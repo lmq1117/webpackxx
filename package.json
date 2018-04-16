@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/lmq1117/webpackxx#readme",
   "devDependencies": {
-    "webpack": "^4.5.0"
+    "webpack": "^3.11.0"
   }
 }
