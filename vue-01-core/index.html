@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello world vue</title>
+</head>
+<body>
+    <div id="app">
+        <p>Hello, {{message}}</p>
+        <p>{{num + 2}}</p>
+        <p>{{contentHtml}}</p>
+        <p v-html="contentHtml"></p>
+    </div>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                message:"limq 's vue hello world!'",
+                num:1,
+                contentHtml:`<span style="color:red;font-size:36px;">红字36px</span>`,
+            }
+        });
+    </script>
+</body>
+</html>
