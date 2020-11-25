@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <component-a></component-a>
+        <component-b></component-b>
+        <component-c></component-c>
+    </div>
+
+    
+
+    <script>
+        Vue.component('component-a',{template:`<div><h1>头部组件 -- {{name}}</h1></div>`,data:function(){
+            return {
+                name:"全局组件"
+            };
+        }})
+
+        //局部组件
+        var ComponentB = {data:function(){
+            return {};
+        },template:`<div>局部组件B</div>`}
+        var ComponentC = {data:function(){
+            return {};
+        },template:`<div>局部组件C</div>`}
+
+        new Vue({
+            el:'#app',
+            components:{
+                'component-b':ComponentB,
+                'component-c':ComponentC,
+            }
+        })
+    </script>
+    
+</body>
+</html>
