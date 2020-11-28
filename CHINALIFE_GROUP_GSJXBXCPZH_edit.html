@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN" th:include="~{wechat/layout/app :: layout(~{::title}, ~{::main})}"
+      th:with="bodyClass='bg-light'"
+      xmlns:th="http://www.thymeleaf.org">
+<title>填写投保信息</title>
+<main>
+    <style>
+        /* 可以设置不同的进入和离开动画 */
+        /* 设置持续时间和动画函数 */
+        .slide-fade-enter-active {
+            transition: all .3s ease;
+        }
+
+        .slide-fade-leave-active {
+            transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+
+        .slide-fade-enter, .slide-fade-leave-to
+            /* .slide-fade-leave-active for below version 2.1.8 */
+        {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+
+        .title {
+            font-size: .24rem;
+        }
+
+        .title .title_label {
+            font-size: .14rem;
+        }
+
+        .product_desc {
+            font-size: .12rem;
+            color: #8F8F8F;
+            list-style: disc;
+            padding-left: .2rem;
+        }
+
+        .van-cell__right-icon {
+            color: rgb(247, 171, 0)
+        }
+
+        .plan_desc {
+            font-size: .16rem;
+        }
+
+        .van-tabs__nav--card {
+            border: 1px solid rgb(247, 171, 0);
+        }
+
+        .van-tabs__nav--card .van-tab {
+            border-right: 1px solid rgb(247, 171, 0);
+            color: rgb(247, 171, 0);
+        }
+
+        .van-tabs__nav--card .van-tab.van-tab--active {
+            background-color: rgb(247, 171, 0);
+        }
+
+        .van-collapse-item .van-cell:after {
+            border-bottom: 0;
+        }
+
+        .van-collapse-item__content {
+            padding-top: 0;
+        }
+
+        .faq_head {
+            position: relative;
+            margin-top: .04rem;
+            float: left;
+            width: .21rem;
+            height: .21rem;
+            border-radius: 4em;
+            background-color: #01A9E8;
+        }
+
+        .bg_question {
+            background-color: #01A9E8;
+        }
+
+        .bg_answer {
+            background-color: #F6AA00;
+        }
+
+        .faq_head .question {
+            position: absolute;
+            font-size: .12rem;
+            top: -.05rem;
+            left: .04rem;
+        }
+
+        .faq_head .answer {
+            position: absolute;
+            font-size: .12rem;
+            top: .02rem;
+            left: .04rem;
+        }
+
+        .faq_text {
+            float: right;
+            width: 93%;
+        }
+
+        .custom_notice {
+            max-height: 400px;
+            overflow-y: scroll;
+        }
+    </style>
+    <div id="app">
+        <van-row type="flex" class="mt-3 p-3 bg-white border-bottom">
+            <van-col span="6"><span class="  pl-2" style="border-left:3px solid #F7AB00;"><b>保障方案</b></span>
+            </van-col>
+        </van-row>
+
+
+        <van-tabs v-model="payload.plan" class="bg-white pt-3 pb-1" type="card">
+            <van-tab title="白金计划" name="PLATINUM" style="padding-left:0.21rem;padding-right: 0.21rem;">
+                <van-image lazy-load width="100%" fit="cover"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/plan_a.png"/>
+            </van-tab>
+            <van-tab title="钻石计划" name="PEARLS" style="padding-left:0.21rem;padding-right: 0.21rem;">
+                <van-image lazy-load width="100%" fit="cover"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/plan_a.png"/>
+            </van-tab>
+            <van-tab title="高保额计划" name="HIGH_INSURED_AMOUNT" style="padding-left:0.21rem;padding-right: 0.21rem;">
+                <van-image lazy-load width="100%" fit="contain"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/plan_a.png"/>
+
+            </van-tab>
+            <van-tab title="宝贝计划" name="CHILD" style="padding-left:0.21rem;padding-right: 0.21rem;">
+                <van-image lazy-load width="100%" fit="contain"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/plan_a.png"/>
+            </van-tab>
+        </van-tabs>
+
+        <div v-if="payload.plan === '高保额计划'">
+            <van-row class="bg-white p-3 mt-3">
+                <van-col span="12"><span style="font-size: .24rem;"><b>可选责任</b></span></van-col>
+            </van-row>
+            <div class="van-hairline--bottom"></div>
+            <van-row class="bg-white p-3 plan_desc">
+                <van-col span="12">猝死限50万</van-col>
+                <van-col span="12" class="text-right">50元/人</van-col>
+            </van-row>
+            <div class="van-hairline--bottom"></div>
+        </div>
+
+
+        <van-row type="flex" class="mt-3 p-3 bg-white border-bottom">
+            <van-col span="6"><span class="  pl-2" style="border-left:3px solid #F7AB00;"><b>保障日期</b></span>
+            </van-col>
+        </van-row>
+        <!-- 生效日期 -->
+        <van-field
+                value="2020/09/30"
+                label="生效日期"
+                placeholder="生效日期"
+                input-align="right"
+        ></van-field>
+
+        <!-- 届满日期 -->
+        <van-field
+                value="2021/09/29"
+                label="届满日期"
+                label-class="text-body"
+                disabled
+                placeholder="届满日期"
+                input-align="right"
+        ></van-field>
+
+        <!-- 保费合计 -->
+        <div class="van-cell van-field" style="font-weight: bold;">
+            <div class="van-cell__title van-field__label"><span>保费合计</span></div>
+            <div class="van-cell__value van-field__value">
+                <div class="van-field__body"><span placeholder="保费合计"
+                                                   class="van-field__control van-field__control--right text-warning">900元</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 保险期间 -->
+        <van-field
+                value="1年"
+                label="保险期间"
+                label-class="text-body"
+                disabled
+                placeholder="保险期间"
+                input-align="right"
+        ></van-field>
+
+
+        <van-row type="flex" class="mt-3 p-3 bg-white border-bottom">
+            <van-col span="6"><span class="  pl-2" style="border-left:3px solid #F7AB00;"><b>投保人</b></span>
+            </van-col>
+        </van-row>
+        <!-- 姓名 -->
+        <van-field
+                v-model="payload.applicantRealName"
+                label="姓名"
+                placeholder="投保人姓名"
+                input-align="right"
+        ></van-field>
+
+
+        <!--证件类型 todo by limq 找国寿要一下证件类型都有哪些-->
+        <van-field
+                readonly
+                clickable
+                is-link
+                :value="payload.applicantSocialInsuranceText"
+                label="证件类型类型"
+                placeholder="请选择"
+                @click="socialInsuranceShow = true"
+                input-align="right"
+        ></van-field>
+        <van-popup v-model="socialInsuranceShow" position="bottom">
+            <van-picker
+                    show-toolbar
+                    :columns="values.socialInsurance|objectValues"
+                    @cancel="socialInsuranceShow = false"
+                    @confirm="(value,index)=>{ payload.applicantSocialInsurance = Object.keys(values.socialInsurance)[index];payload.applicantSocialInsuranceText = value;socialInsuranceShow = false; }"/>
+        </van-popup>
+
+
+        <!-- 证件号码 -->
+        <van-field
+                v-model="payload.applicantIdCard"
+                label="证件号码"
+                placeholder="请输入"
+                input-align="right"
+        ></van-field>
+
+
+        <!--性别-->
+        <van-row type="flex" class="id_card_expire px-3 py-2 bg-white text-body fs-sm">
+            <van-col span="6" class="pt-1">性别</van-col>
+            <van-col span="5" offset="8">
+                <van-button
+                        :class="{'border-warning text-warning':payload.insuredIdCardLongTerm === 'NOT_LONG_TERM'}"
+                        @click="payload.insuredIdCardLongTerm = 'NOT_LONG_TERM'"
+                        size="small" type="default" block>男
+                </van-button>
+                <span v-show="payload.insuredIdCardLongTerm && payload.insuredIdCardLongTerm === 'NOT_LONG_TERM'"
+                      class="triangle-top-right"></span>
+                <van-icon class="top-right-ok" name="success"/>
+            </van-col>
+            <van-col span="5" offset="1">
+                <van-button
+                        :class="{'border-warning text-warning':payload.insuredIdCardLongTerm === 'LONG_TERM'}"
+                        @click="payload.insuredIdCardLongTerm = 'LONG_TERM'"
+                        size="small" type="default" block>女
+                </van-button>
+                <span v-show="payload.insuredIdCardLongTerm && payload.insuredIdCardLongTerm === 'LONG_TERM'"
+                      class="triangle-top-right"></span>
+                <van-icon class="top-right-ok" name="success"/>
+            </van-col>
+        </van-row>
+
+
+        <!-- 手机号码 -->
+        <van-field
+                v-model="payload.applicantMobile"
+                label="手机号码"
+                type="tel"
+                placeholder="请输入"
+                input-align="right"
+        ></van-field>
+        <!-- 电子邮箱 -->
+        <van-field
+                v-model="payload.applicantEmail"
+                label="电子邮箱"
+                type="email"
+                placeholder="请输入"
+                input-align="right"
+        ></van-field>
+
+
+        <!-- 被保人信息 start -->
+        <van-row type="flex" style="align-items: center" class="px-3 mt-3 bg-white border-bottom">
+            <van-col span="8" class="py-3">
+                <span class=" pl-2"
+                      style="border-left:3px solid #F7AB00;"><b>被保险人</b></span>
+            </van-col>
+            <van-col span="16" class="text-right">
+                <van-button
+                        @click="payload.insuredRelation='SELF'"
+                        size="mini"
+                        :type="payload.insuredRelation === 'SELF' ? 'warning':'default'"> 本人
+                </van-button>
+                <van-button
+                        @click="openRelationComponent(false,1)"
+                        size="mini"
+                        :type="payload.insuredRelation === 'SELF' ? 'default':'warning'">
+                    {{payload.insuredRelation === 'SELF'?'家属':relationEnums[payload.insuredRelation]}}
+                </van-button>
+            </van-col>
+        </van-row>
+
+        <van-field
+                v-model="payload.insuredRealName"
+                label="姓名"
+                placeholder="被保人姓名"
+                input-align="right"
+        ></van-field>
+
+        <!--证件类型 todo by limq 找国寿要一下证件类型都有哪些-->
+        <van-field
+                readonly
+                clickable
+                is-link
+                :value="payload.applicantSocialInsuranceText"
+                label="证件类型类型"
+                placeholder="请选择"
+                @click="socialInsuranceShow = true"
+                input-align="right"
+        ></van-field>
+        <van-popup v-model="socialInsuranceShow" position="bottom">
+            <van-picker
+                    show-toolbar
+                    :columns="values.socialInsurance|objectValues"
+                    @cancel="socialInsuranceShow = false"
+                    @confirm="(value,index)=>{ payload.applicantSocialInsurance = Object.keys(values.socialInsurance)[index];payload.applicantSocialInsuranceText = value;socialInsuranceShow = false; }"/>
+        </van-popup>
+
+        <van-field
+                v-model="payload.insuredIdCard"
+                label="证件号码"
+                placeholder="被保人证件号码"
+                input-align="right"
+        >
+
+            <template #button>
+                <van-button @click="showConfirm = true;" type="warning" size="small">去验证</van-button>
+            </template>
+        </van-field>
+
+        <!--实名认证-->
+        <van-dialog @confirm="showConfirm = false;" v-model="showConfirm" title="实名认证"
+                    confirm-button-color="rgb(247, 171, 0)">
+            <div class="bg-white px-3 py-2">
+                <van-row type="flex" class="bg-white pl-3 pr-3" justify="space-between">
+                    <van-col span="24">
+                        <p><b>尊敬的用户</b></p>
+                        <p><b>需要你完善实名信息</b></p>
+                    </van-col>
+                </van-row>
+                <van-row type="flex" class="bg-white pl-3 pr-3" justify="space-between">
+
+                    <van-col span="24" class="text-center">
+                        <van-button style="border:.01333rem solid #ebedf0;" class="border-warning text-warning"
+                                    type="default" block>手机认证
+                        </van-button>
+                        <span class="triangle-top-right"></span>
+                        <van-icon class="top-right-ok" name="success"/>
+                    </van-col>
+
+                </van-row>
+                <van-row type="flex" class="p-3 bg-white border-bottom">
+                    <van-col span="8"><span class="  pl-2" style="border-left:3px solid #F7AB00;"><b>认证信息</b></span>
+                    </van-col>
+                </van-row>
+                <van-cell-group>
+                    <van-field v-model="payload.mobile" label="手机号" placeholder="请输入手机号"></van-field>
+                    <van-field
+                            v-model="payload.captcha"
+                            center
+                            label="图形验证码"
+                            placeholder="请输入图形验证码"
+                            style="line-height: 0"
+                    >
+                        <template #button>
+                            <img class="w-auto" alt="captcha"
+                                 style="height: 0.33rem"
+                                 id="captcha-img"
+                                 onclick="this.src='/captcha?width=95&height=31&'+(new Date()).getTime()"
+                                 src="/captcha?width=95&height=31"
+                            >
+                        </template>
+                    </van-field>
+                    <van-field
+                            center
+                            v-model="payload.smsCode"
+                            input-align="left"
+                            label="短信验证码"
+                            placeholder="请输入短信验证码">
+                        <template #button>
+                            <a href="javascript:;" class="text-info pl-2" id="sendCode" v-if="!hasSend" @click="sendCode"
+                               style="border-left:0.013rem solid #ccc;">发送验证码</a>
+                            <span id="sendCodePending" v-if="hasSend" class="text-info pl-2"
+                                  style="border-left:0.013rem solid #ccc;">{{ times }}s 后操作</span>
+                        </template>
+                    </van-field>
+                </van-cell-group>
+
+
+            </div>
+        </van-dialog>
+
+
+        <!--性别-->
+        <van-row type="flex" class="id_card_expire px-3 py-2 bg-white text-body fs-sm">
+            <van-col span="6" class="pt-1">性别</van-col>
+            <van-col span="5" offset="8">
+                <van-button
+                        :class="{'border-warning text-warning':payload.insuredIdCardLongTerm === 'NOT_LONG_TERM'}"
+                        @click="payload.insuredIdCardLongTerm = 'NOT_LONG_TERM'"
+                        size="small" type="default" block>男
+                </van-button>
+                <span v-show="payload.insuredIdCardLongTerm && payload.insuredIdCardLongTerm === 'NOT_LONG_TERM'"
+                      class="triangle-top-right"></span>
+                <van-icon class="top-right-ok" name="success"/>
+            </van-col>
+            <van-col span="5" offset="1">
+                <van-button
+                        :class="{'border-warning text-warning':payload.insuredIdCardLongTerm === 'LONG_TERM'}"
+                        @click="payload.insuredIdCardLongTerm = 'LONG_TERM'"
+                        size="small" type="default" block>女
+                </van-button>
+                <span v-show="payload.insuredIdCardLongTerm && payload.insuredIdCardLongTerm === 'LONG_TERM'"
+                      class="triangle-top-right"></span>
+                <van-icon class="top-right-ok" name="success"/>
+            </van-col>
+        </van-row>
+
+        <!--出生日期        -->
+        <van-field
+                readonly
+                clickable
+                class="field-top-line"
+                @click="beginBirthDatePicker"
+                is-link
+                v-model="payload.insuredBirthday"
+                label="出生日期"
+                placeholder="请选择"
+                input-align="right"
+        ></van-field>
+        <van-popup v-model="showBirthDatePicker" position="bottom">
+            <van-datetime-picker
+                    :value="new Date(payload.insuredBirthday)"
+                    :min-date="minDate"
+                    :max-date="maxDate"
+                    type="date"
+                    title="选择年月日"
+                    @confirm="onBirthDateConfirm"
+                    @cancel="showBirthDatePicker = false"
+            />
+        </van-popup>
+
+        <!-- 手机号码 -->
+        <van-field
+                v-model="payload.insuredMobile"
+                label="手机号"
+                type="tel"
+                placeholder="请输入"
+                input-align="right"
+        ></van-field>
+        <!-- 邮箱 -->
+
+        <!-- 国家地区 -->
+        <van-field
+                readonly
+                clickable
+                :value="payload.insuredLocationText"
+                label="国家地区"
+                placeholder="点击选择省市区"
+                @click="insuredLocationShow = true"
+                input-align="right"
+        ></van-field>
+        <van-popup v-model="insuredLocationShow" position="bottom">
+            <van-picker show-toolbar title="" :columns="values.locations" @cancel="insuredLocationShow = false"
+                        @confirm="(value,index)=>{
+                         payload.insuredProvince = this.values.locations[index[0]]['id'];
+                    payload.insuredCity = this.values.locations[index[0]]['children'][index[1]]['id']
+                    payload.insuredCounty = this.values.locations[index[0]]['children'][index[1]]['children'][index[2]]['id']
+                    payload.insuredLocationText = value.join('/');
+                    insuredLocationShow = false;
+                        }"/>
+        </van-popup>
+
+
+        <!--有无医保-->
+        <van-row type="flex" class="id_card_expire px-3 py-2 bg-white text-body fs-sm">
+            <van-col span="6" class="pt-1">有无医保</van-col>
+            <van-col span="5" offset="8">
+                <van-button
+                        :class="{'border-warning text-warning':payload.insuredIdCardLongTerm === 'NOT_LONG_TERM'}"
+                        @click="payload.insuredIdCardLongTerm = 'NOT_LONG_TERM'"
+                        size="small" type="default" block>有医保
+                </van-button>
+                <span v-show="payload.insuredIdCardLongTerm && payload.insuredIdCardLongTerm === 'NOT_LONG_TERM'"
+                      class="triangle-top-right"></span>
+                <van-icon class="top-right-ok" name="success"/>
+            </van-col>
+            <van-col span="5" offset="1">
+                <van-button
+                        :class="{'border-warning text-warning':payload.insuredIdCardLongTerm === 'LONG_TERM'}"
+                        @click="payload.insuredIdCardLongTerm = 'LONG_TERM'"
+                        size="small" type="default" block>无医保
+                </van-button>
+                <span v-show="payload.insuredIdCardLongTerm && payload.insuredIdCardLongTerm === 'LONG_TERM'"
+                      class="triangle-top-right"></span>
+                <van-icon class="top-right-ok" name="success"/>
+            </van-col>
+        </van-row>
+
+
+        <!--            <van-button class="bg-white border-top text-warning" style="font-size: 0.25rem;" block-->
+        <!--                        @click="openRelationComponent(false,1)">-->
+        <!--                + 选择被保人-->
+        <!--            </van-button>-->
+
+        <!--  todo 被保险人健康告知      -->
+
+        <!-- 被保人信息 end -->
+
+
+        <!-- 受益人 -->
+        <van-row type="flex" class="mt-3 p-3 bg-white border-bottom">
+            <van-col span="6"><span class="  pl-2" style="border-left:3px solid #F7AB00;"><b>受益人</b></span>
+            </van-col>
+        </van-row>
+
+        <!-- 法定受益人 || 指定受益人 -->
+        <van-row type="flex" class="bg-white p-3" justify="space-between">
+
+            <van-col span="11" class="text-center">
+                <van-button class="border-warning text-warning"
+                            @click="payload.beneficiaryType = key" type="default" block>法定受益人
+                </van-button>
+                <span class="triangle-top-right"></span>
+                <van-icon class="top-right-ok" name="success"/>
+            </van-col>
+
+        </van-row>
+        <!-- 法定受益人 -->
+        <van-row type="flex" class="legalPerson px-3 pb-3 bg-white" style="position: relative;"
+                 v-if="true">
+            <van-col span="24" class="p-2 text-secondary" style="background-color: #FFF6E8;">
+                <span>法定受益人：在继承保险金时，法定继承人按照第一继承人（配偶、父母包括养父母、子女包括非婚生子女、养子女）,第二继承人（祖父母，外祖父母，兄弟姐妹）的顺序继承。</span>
+            </van-col>
+            <div style="position:relative;width:10px;height:10px;background-color:#FFF6E8;left:-75%;top:-5px;transform:rotate(45deg);"></div>
+        </van-row>
+
+
+        <van-row type="flex" class="mt-3 p-3 bg-white border-bottom">
+            <van-col span="24">
+                <div class=" pl-2" style="border-left:3px solid #F7AB00;"><b>支付信息</b></div>
+                <div class="text-secondary mt-1" style="font-size: .16rem;">请填写投保人本人的银行借记卡</div>
+            </van-col>
+        </van-row>
+
+        <van-field
+                readonly
+                clickable
+                is-link
+                :value="payload.payFrequencyText"
+                label="请选择银行"
+                placeholder="请选择"
+                @click="payFrequencyShow = true"
+                input-align="right"
+        ></van-field>
+        <van-popup v-model="payFrequencyShow" position="bottom">
+            <van-picker
+                    show-toolbar
+                    :columns="values.payFrequency|objectValues"
+                    @cancel="payFrequencyShow = false"
+                    @confirm="(value,index)=>{ payload.payFrequency = Object.keys(values.payFrequency)[index];payload.payFrequencyText = value;payFrequencyShow = false; }"/>
+        </van-popup>
+
+        <!-- 银行卡号 -->
+        <van-field
+                v-model="payload.insuredMobile"
+                label="银行卡号"
+                type="tel"
+                placeholder="请输入"
+                input-align="right"
+        ></van-field>
+
+        <!-- 银行预留手机号码 -->
+        <van-field
+                v-model="payload.insuredMobile"
+                label="手机号码"
+                type="tel"
+                placeholder="请输入银行预留手机号"
+                input-align="right"
+        ></van-field>
+
+
+        <van-row type="flex" style="align-items: center" class="px-3 mt-3 bg-white border-bottom">
+            <van-col span="12" class="py-3">
+                <div style="font-size: .16rem;">
+                    <span class="" style="margin-left: -0.1rem;"><a class="text-info ml-2" href="">《客户信息共享条款》</a></span>
+                </div>
+
+            </van-col>
+            <van-col span="12" class="text-right">
+                <van-button
+                        @click="payload.insuredRelation='SELF'"
+                        size="mini"
+                        :type="payload.insuredRelation === 'SELF' ? 'warning':'default'"> 接受
+                </van-button>
+                <van-button
+                        size="mini"
+                        :type="payload.insuredRelation === 'SELF' ? 'default':'warning'"> 不接受
+                </van-button>
+            </van-col>
+        </van-row>
+
+
+
+        <div class="bg-white mt-3 px-3 py-2" style="font-size: .16rem;">
+            <van-checkbox class="" style="float: left;" v-model="checked" checked-color="rgb(247,171,0)">我已阅读并同意</van-checkbox>
+            <div style="float: left;padding-top: 0.022rem;"><a class="text-info ml-2" href="/wechat/CHINALIFE_GROUP_GSJXBXCPZH/companyStatement">公司声明</a></div>
+            <div style="float: left;padding-top: 0.022rem;"><a class="text-info ml-2" href="/wechat/CHINALIFE_GROUP_GSJXBXCPZH/insureProvision">产品条款</a></div>
+            <div style="float: left;padding-top: 0.022rem;"><a class="text-info ml-2" href="/wechat/CHINALIFE_GROUP_GSJXBXCPZH/releaseLiability">责任免除</a></div>
+            <div style="float: left;padding-top: 0.022rem;"><a class="text-info ml-2" href="/wechat/CHINALIFE_GROUP_GSJXBXCPZH/insureProvision">声明与授权</a></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <!--        立即投保-->
+        <van-button block type="warning" native-type="submit" class="mt-4" style="font-size: .24rem;"
+
+                    @click="submit">
+            <span v-if="payload.price">¥{{payload.price}}</span><span class="ml-2">立即投保</span>
+        </van-button>
+
+        <!--联系人选择框-->
+        <van-popup v-model="relationPickerPopupShow" position="right" :style="{ height:'100%',width: '100%' }">
+            <relation-component
+                    @confirm="confirmRelationComponent"
+                    @cancel="relationPickerPopupShow = false"
+                    ref="relation-component"
+                    :allow-relations="['SPOUSE','CHILD','PARENT']"
+                    :multiple="relationComponentMultiple" attach=""></relation-component>
+        </van-popup>
+    </div>
+
+    <script th:inline="javascript">
+        new Vue({
+            components: {
+                'relation-component': httpVueLoader("[(${@templateUtil.urlCacheCtrl('/static/wechat/vue/relation/relation.vue')})]")
+            },
+            el: '#app',
+            data: {
+                checked:false,
+                times: 60,
+                hasSend: false,
+                active: true,
+                activeNum: 0,
+                relationEnums: [(${@templateUtil.enumToDescJson(T(com.cgnib.iqb.mapping.enums.Relation).values())})],
+                //todo 改为中国人寿的
+                beneficiaryTypeEnums: [(${@templateUtil.enumToDescJson(T(com.cgnib.iqb.mapping.enums.BeneficiaryType).values())})],
+                showConfirm: false,
+                showBirthDatePicker: false,
+                values: {
+                    //动态属性
+                },
+                socialInsuranceShow: false,
+                applicantOccupationCodeShow: false,
+                applicantLocationShow: false,
+                nationShow: false,
+                insuredLocationShow: false,
+                payFrequencyShow: false,
+                insuredMedicalInsuranceTypeShow: false,
+                payTermShow: false,
+                insuredNationShow: false,
+                relationPickerPopupShow: false,//联系人选择框
+                relationComponentMultiple: true,//联系人选择框是否开启多选
+                insuredOccupationCodeShow: false,
+                showIdCardExpireDatePicker: false,
+                insuredIdCardExpireDate: "",
+                showInsuredIdCardExpireDatePicker: false,
+                minDate: new Date(),
+                maxDate: new Date(new Date().getFullYear() + 20, new Date().getMonth(), new Date().getDate()),
+                payload: {
+
+                }
+            },
+            methods: {
+                //
+                onConfirmAuthentication: function () {
+                    this.showConfirm=false;
+                    //todo 短信验证码验证
+                },
+
+                sendCode() {
+                    //todo ajax后台发送验证码
+                    this.sendCodePending();
+                },
+                sendCodePending() {
+                    this.hasSend = true;
+                    this.timer = setInterval(() => {
+                        this.times--;
+                        if (this.times === 0) {
+                            this.hasSend = false;
+                            this.times = 60;
+                            clearInterval(this.timer);
+                        }
+                    }, 1000)
+                },
+
+                beginBirthDatePicker() {
+                    this.showBirthDatePicker = true;
+                    if (this.payload.insuredBirthday.length == 0) {
+                        this.payload.insuredBirthday = date2YYYYMMDD(new Date());
+                    }
+                },
+                onBirthDateConfirm(date) {
+                    this.payload.insuredBirthday = date2YYYYMMDD(date);
+                    this.showBirthDatePicker = false;
+                },
+
+                openRelationComponent(multiple, relationPickerPopupMode) {
+                    this.relationComponentMultiple = multiple;
+                    this.relationPickerPopupShow = true;
+                    this.payload.relationPickerPopupMode = relationPickerPopupMode;
+                },
+                confirmRelationComponent(list) {
+                    this.relationPickerPopupShow = false;
+                    if (list.length === 0) {
+                        return;
+                    }
+
+                    if (this.payload.relationPickerPopupMode === 1 && list.length > 0) {
+                        //被保人
+                        let insured = relation2insured(list[0])
+                        for (let k in insured) {
+                            Vue.set(this.payload, k, insured[k])
+                        }
+
+                        this.calcPrice();//todo 本人/非本人处理 !!!!!!!!!!!
+                        // } else if (this.payload.relationPickerPopupMode === 2) {
+                        //     //受益人
+                        //     let sum = 0.0;
+                        //     this.payload.beneficiaries = list.map((item, index) => {
+                        //         if (index !== list.length - 1) {
+                        //             item.percentage = parseFloat((100 / list.length).toFixed(2));
+                        //             sum += item.percentage;
+                        //             item.percentage = item.percentage.toFixed(2);
+                        //         } else {
+                        //             //last item
+                        //             item.percentage = (100 - sum).toFixed(2);
+                        //         }
+                        //         return item;
+                        //     });
+                    } else {
+                        alert('不存在的选项');
+                    }
+                },
+                onIdCardExpireDateConfirm(date) {
+                    this.payload.applicantIdCardExpireDate = date2YYYYMMDD(date);
+                    this.showIdCardExpireDatePicker = false;
+                },
+                onInsuredIdCardExpireDateConfirm(date) {
+                    this.payload.insuredIdCardExpireDate = date2YYYYMMDD(date);
+                    this.showInsuredIdCardExpireDatePicker = false;
+                },
+                insuredOccupationCodeConfirm(value, index) {
+                    this.payload.insuredOccupationCodeFirst = this.values.occupationCode[index[0]]['id'];
+                    this.payload.insuredOccupationCodeSecond = this.values.occupationCode[index[0]]['children'][index[1]]['id']
+                    this.payload.insuredOccupationCodeThird = this.values.occupationCode[index[0]]['children'][index[1]]['children'][index[2]]['id']
+                    this.payload.insuredOccupationCodeText = value.join('/');
+                    this.insuredOccupationCodeShow = false;
+                },
+                applicantLocationConfirm(value, index) {
+                    this.payload.applicantProvince = this.values.locations[index[0]]['id'];
+                    this.payload.applicantCity = this.values.locations[index[0]]['children'][index[1]]['id']
+                    this.payload.applicantCounty = this.values.locations[index[0]]['children'][index[1]]['children'][index[2]]['id']
+                    this.payload.applicantLocationText = value.join('/');
+                    this.applicantLocationShow = false;
+                },
+                applicantOccupationCodeConfirm(value, index) {
+                    this.payload.applicantOccupationCodeFirst = this.values.occupationCode[index[0]]['id'];
+                    this.payload.applicantOccupationCodeSecond = this.values.occupationCode[index[0]]['children'][index[1]]['id']
+                    this.payload.applicantOccupationCodeThird = this.values.occupationCode[index[0]]['children'][index[1]]['children'][index[2]]['id']
+                    this.payload.applicantOccupationCodeText = value.join('/');
+                    this.applicantOccupationCodeShow = false;
+                },
+                submit() {
+                    getOrderPayload([[${product}]]).putAll(this.payload);
+                    startLoading();
+                    console.log(getOrderPayload([[${product}]]).all())
+                    axios.post('/wechat/[(${product})]/create', getOrderPayload([[${product}]]).all()).then(res => location.href = res.data.data).catch(error => vant.Toast(error.response.data.message));
+                },
+                calcPrice() {
+                    return; //todo !!!!!!!!!!!!!!!!!!!!!!!!!
+                    let that = this;
+                    this.payload.insuredBirthday = getBirthdayByIdCard(this.payload.insuredIdCard);
+                    this.payload.insuredGender = getGenderByIdCard(this.payload.insuredIdCard);
+
+                    axios.post('/wechat/product/calInsureFee', this.payload).then(response => that.payload.price = response.data.data.price).catch(error => {
+                        vant.Toast(error.response.data.message);
+                        this.payload.price = 0
+                    });
+                }
+            },
+            created() {
+                //从本地session中恢复数据
+                Object.entries(getOrderPayload([[${product}]]).all()).forEach(([key, value]) => Vue.set(this.payload, key, value))
+
+                let that = this;
+                axios.get('/mapping/taikang/location/treeListFormat.json?v=2').then(res => that.values.locations = res.data);
+                axios.get('/mapping/taikang/occupationCode/treeListFormat.json?v=2').then(res => that.values.occupationCode = res.data);
+                axios.get('/mapping/taiKang/payFrequency.json?v=2').then(res => that.values.payFrequency = res.data);
+                axios.get('/mapping/taiKang/payTerm.json?v=2').then(res => that.values.payTerm = res.data);
+                axios.get('/mapping/taiKang/nation.json?v=2').then(res => that.values.nation = res.data);
+                axios.get('/mapping/taiKang/socialInsurance.json?v=2').then(res => that.values.socialInsurance = res.data);
+                axios.get('/mapping/taiKang/insuredMedicalInsuranceType.json?v=2').then(res => that.values.insuredMedicalInsuranceType = res.data);
+            },
+            mounted() {
+                this.calcPrice();
+            }
+        });
+
+    </script>
+</main>
+</html>

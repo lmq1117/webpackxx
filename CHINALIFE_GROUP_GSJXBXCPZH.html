@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN" th:include="~{wechat/layout/app :: layout(~{::title}, ~{::main})}"
+      th:with="bodyClass='bg-light'"
+      xmlns:th="http://www.thymeleaf.org">
+<title>产品详情</title>
+<main>
+    <style>
+        .title {
+            font-size: .24rem;
+        }
+
+        .title .title_label {
+            font-size: .14rem;
+        }
+
+        .product_desc {
+            font-size: .12rem;
+            color: #8F8F8F;
+            list-style: disc;
+            padding-left: .2rem;
+        }
+
+        .van-cell__right-icon {
+            color: rgb(247, 171, 0)
+        }
+
+        .plan_desc {
+            font-size: .16rem;
+        }
+
+        .van-tabs__nav--card {
+            border: 1px solid rgb(247, 171, 0);
+        }
+
+        .van-tabs__nav--card .van-tab {
+            border-right: 1px solid rgb(247, 171, 0);
+            color: rgb(247, 171, 0);
+        }
+
+        .van-tabs__nav--card .van-tab.van-tab--active {
+            background-color: rgb(247, 171, 0);
+        }
+
+        .van-collapse-item .van-cell:after {
+            border-bottom: 0;
+        }
+
+        .van-collapse-item__content {
+            padding-top: 0;
+        }
+
+        .faq_head {
+            position: relative;
+            margin-top: .04rem;
+            float: left;
+            width: .21rem;
+            height: .21rem;
+            border-radius: 4em;
+            background-color: #01A9E8;
+        }
+
+        .bg_question {
+            background-color: #01A9E8;
+        }
+
+        .bg_answer {
+            background-color: #F6AA00;
+        }
+
+        .faq_head .question {
+            position: absolute;
+            font-size: .12rem;
+            top: -.05rem;
+            left: .04rem;
+        }
+
+        .faq_head .answer {
+            position: absolute;
+            font-size: .12rem;
+            top: .02rem;
+            left: .04rem;
+        }
+
+        .faq_text {
+            float: right;
+            width: 93%;
+        }
+
+    </style>
+    <div id="app">
+        <van-row align="center" class="p-0">
+            <van-col span="24">
+                <van-image lazy-load width="100%" height="2.8rem" fit="cover"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/china_life_index.png"/>
+            </van-col>
+        </van-row>
+        <van-row class="bg-white p-3">
+            <van-col span="12"><span style="font-size: .24rem;"><b>保障计划</b></span></van-col>
+            <van-col span="12" class="text-right"><a href="/wechat/cgnLife/detail" class="text-info">查看详情</a></van-col>
+        </van-row>
+        <van-row type="flex" class="mt-3 p-3 bg-white border-bottom">
+            <van-col span="6"><span class="  pl-2" style="border-left:3px solid #F7AB00;"><b>保障方案</b></span>
+            </van-col>
+        </van-row>
+
+
+        <van-tabs v-model="payload.plan" class="bg-white pt-3 pb-1" type="card">
+            <van-tab title="白金计划" name="PLATINUM" style="padding-left:0.21rem;padding-right: 0.21rem;">
+                <van-image lazy-load width="100%" fit="cover"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/plan_a.png"/>
+            </van-tab>
+            <van-tab title="钻石计划" name="PEARLS" style="padding-left:0.21rem;padding-right: 0.21rem;">
+                <van-image lazy-load width="100%" fit="cover"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/plan_a.png"/>
+            </van-tab>
+            <van-tab title="高保额计划" name="HIGH_INSURED_AMOUNT" style="padding-left:0.21rem;padding-right: 0.21rem;">
+                <van-image lazy-load width="100%" fit="contain"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/plan_a.png"/>
+
+            </van-tab>
+            <van-tab title="宝贝计划" name="CHILD" style="padding-left:0.21rem;padding-right: 0.21rem;">
+                <van-image lazy-load width="100%" fit="contain"
+                           src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/plan_a.png"/>
+            </van-tab>
+        </van-tabs>
+
+        <div v-if="payload.plan === '高保额计划'">
+            <van-row class="bg-white p-3 mt-3">
+                <van-col span="12"><span style="font-size: .24rem;"><b>可选责任</b></span></van-col>
+            </van-row>
+            <div class="van-hairline--bottom"></div>
+            <van-row class="bg-white p-3 plan_desc">
+                <van-col span="12">猝死限50万</van-col>
+                <van-col span="12" class="text-right">50元/人</van-col>
+            </van-row>
+            <div class="van-hairline--bottom"></div>
+        </div>
+
+
+
+        <div class="p-3 bg-white plan_desc">
+            更多请查看<a class="mx-2 text-info" href="/wechat/cgnLife/insureAttention">投保须知</a>|<a class="mx-2 text-info"
+                                                                                              href="/wechat/cgnLife/insureProvision">保险条款</a>|<a
+                class="mx-2 text-info" href="/wechat/cgnLife/insureNotice">投保告知</a>
+        </div>
+        <van-tabs class="mt-3 mb-5 bg-white" v-model="tabActive">
+            <van-tab title="产品介绍" class="" name="1">
+                <van-row>
+                    <van-col span="24" class="px-3 border-bottom"><h3 class="">产品介绍</h3></van-col>
+                </van-row>
+
+                <van-row>
+                    <van-image width="100%" src="/static/wechat/img/product/CHINALIFE_GROUP_GSJXBXCPZH/product_desc_1.png"></van-image>
+                </van-row>
+
+
+            </van-tab>
+            <van-tab title="理赔说明" class="" name="2">
+                <van-row class="border-bottom">
+                    <van-col span="12" class="px-3"><h3 class="">理赔说明</h3></van-col>
+                    <van-col span="12" class="px-3 pt-4 text-right"><a href="/wechat/cgnLife/claim/service"
+                                                                       class="text-info">理赔须知</a></van-col>
+                </van-row>
+                <van-row>
+                    <van-col span="24" class="px-3">
+                        <p class="text-warning"><b>第一步：依据理赔指引报案</b></p>
+                        <p>发生保险事故后，保单联系人、父母、亲朋好友及时拨打400-068-5466报案，联系保险公司提供理赔材料。</p>
+                        <p class="text-warning"><b>第二步：一对一跟进</b></p>
+                        <p>收到全部理赔材料后，保险公司专业人员将对资料进行审核。</p>
+                        <p class="text-warning"><b>第三步：理赔通过获得赔付</b></p>
+                        <p>理赔审核结束，赔付保险金到指定账户中。</p>
+                    </van-col>
+                </van-row>
+            </van-tab>
+            <van-tab title="常见问题" class="" name="3">
+                <van-row>
+                    <van-col span="24" class="px-3 border-bottom"><h3 class="">常见问题</h3></van-col>
+                </van-row>
+                <van-collapse v-model="activeName" accordion>
+                    <van-collapse-item name="1">
+                        <template #title>
+                            <div>
+                                <div class="text-white faq_head bg_question">
+                                    <span class="question">问</span>
+                                </div>
+                                <div class="font-weight-bold faq_text">核家欢与补充医保是否冲突?</div>
+                                <div style="clear: both"></div>
+                            </div>
+                        </template>
+                        <div>
+                            <div class="text-white faq_head bg_answer">
+                                <span class="answer">答</span>
+                            </div>
+                            <div class="faq_text">核家欢，可扩大员工家庭参保范围，提高风险保障额度，降低家庭经济压力，是补充医保的有益补充。</div>
+                            <div style="clear: both"></div>
+                        </div>
+                    </van-collapse-item>
+                    <van-collapse-item name="2">
+                        <template #title>
+                            <div>
+                                <div class="text-white faq_head bg_question">
+                                    <span class="question">问</span>
+                                </div>
+                                <div class="font-weight-bold faq_text">可以单独只给家属投保吗?</div>
+                                <div style="clear: both"></div>
+                            </div>
+                        </template>
+                        <div>
+                            <div class="text-white faq_head bg_answer">
+                                <span class="answer">答</span>
+                            </div>
+                            <div class="faq_text">
+                                不可以。员工投保B或D计划，员工子女或配偶方可投保A或B计划；员工投保B计划的情况下，员工父母方可投保C计划；员工配偶投保B计划的情况下，员工配偶父母方案投保C计划。
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+                    </van-collapse-item>
+                    <van-collapse-item name="3">
+                        <template #title>
+                            <div>
+                                <div class="text-white faq_head bg_question">
+                                    <span class="question">问</span>
+                                </div>
+                                <span class="font-weight-bold faq_text">续保方案会不会大调整?</span>
+                                <div style="clear: both"></div>
+                            </div>
+                        </template>
+                        <div>
+                            <div class="text-white faq_head bg_answer">
+                                <span class="answer">答</span>
+                            </div>
+                            <div class="faq_text">核家欢是“就是保”品牌产品，我们将竭尽所能维持现有方案与保费的基本稳定，但不排除受项目赔付率及市场影响对产品进行微调。</div>
+                            <div style="clear: both"></div>
+                        </div>
+                    </van-collapse-item>
+                    <van-collapse-item name="4">
+                        <template #title>
+                            <div>
+                                <div class="text-white faq_head bg_question">
+                                    <span class="question">问</span>
+                                </div>
+                                <span class="font-weight-bold faq_text">核家欢可以报销门诊吗?</span>
+                                <div style="clear: both"></div>
+                            </div>
+                        </template>
+                        <div>
+                            <div class="text-white faq_head bg_answer">
+                                <span class="answer">答</span>
+                            </div>
+                            <div class="faq_text">
+                                核家欢A、B、C计划包括<span style="text-decoration: underline">意外医疗门诊</span>，被保险人<span
+                                    style="text-decoration: underline">因意外发生</span>的社保范围内的门诊与急诊费可100%报销，治疗所必须的自费药品、自费检查费用90%报销，无免赔额。但疾病（如感冒发烧等）的门诊、急诊不可理赔报销。
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+                    </van-collapse-item>
+                    <van-collapse-item name="5">
+                        <template #title>
+                            <div>
+                                <div class="text-white faq_head bg_question">
+                                    <span class="question">问</span>
+                                </div>
+                                <span class="font-weight-bold faq_text">家人有新农合或城镇居民医保，如何申请核家欢理赔?</span>
+                                <div style="clear: both"></div>
+                            </div>
+                        </template>
+                        <div>
+                            <div class="text-white faq_head bg_answer">
+                                <span class="answer">答</span>
+                            </div>
+                            <div class="faq_text">
+                                被保险人因意外门/急诊或住院时，可先经新农合或城镇居民医保报销；如仍有医疗费未报销完，可提供病历、发票复印件和新农合或城镇居民医保报销凭证（分割单或结算单）等通过核家欢报销剩余医疗费。如附加了住院医疗险同上报销。
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+                    </van-collapse-item>
+                </van-collapse>
+            </van-tab>
+        </van-tabs>
+
+        <!--投保前提示-->
+        <van-dialog @confirm="agreeOrNot" v-model="tipBeforeInsure" title="投保前提示" theme="round-button"
+                    confirm-button-color="rgb(247, 171, 0)">
+            <div class="bg-white px-3 py-2">
+                <div>
+                    <p>尊敬的客户您好：</p>
+                    <p>
+                        您即将进入中国人寿保险股份有限公司互联网保险投保页面，请您在投保前仔细阅读保险条款及相关说明，根据中国银保监会要求，您在投保过程中的录入信息、操作轨迹将被记录，请您阅读并同意《隐私声明》。</p>
+                </div>
+
+                <van-checkbox class="" style="float: left;" v-model="checked" checked-color="rgb(247,171,0)">本人已阅读并同意
+                </van-checkbox>
+                <div style="float: left;line-height: .266rem;"><a class="text-info ml-2"
+                                                                  href="/wechat/CHINALIFE_GROUP_GSJXBXCPZH/privacyStatement">隐私声明</a>
+                </div>
+                <!--  todo by limq 告知书是啥 -->
+                <div style="float: left;line-height: .266rem;"><a class="text-info ml-2"
+                                                                  href="/wechat/CHINALIFE_GROUP_GSJXBXCPZH/insureProvision">告知书</a>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </van-dialog>
+
+        <div class="van-hairline--top van-submit-bar shadow ">
+            <div class="van-submit-bar__bar">
+                <van-button type="default" class="border-0"><a class="text-secondary"
+                                                               th:href="'tel:' + ${T(com.cgnib.iqb.mapping.constant.CommonConstant).SERVICE_MOBILE}">
+                    <van-icon name="phone-o"></van-icon>
+                    <div style="font-size: 0.14rem">电话咨询</div>
+                </a></van-button>
+                <div class="van-submit-bar__text">
+                    <span></span>
+                    <span class="van-submit-bar__price">¥
+                                <span class="van-submit-bar__price van-submit-bar__price--integer">{{ price }}</span>
+                                <span class="van-submit-bar__suffix-label">起</span>
+                            </span>
+                </div>
+                <a @click="tipBeforeInsure = true" ref="/wechat/CHINALIFE_GROUP_GSJXBXCPZH/edit"
+                   class="van-button van-button--warning van-button--normal van-button--round van-submit-bar__button van-submit-bar__button--warning">
+                    <div class="van-button__content"><span class="van-button__text">立即投保</span></div>
+                </a>
+            </div>
+        </div>
+
+        <!--        <van-row class="shadow bg-white" style="width:100%;position: fixed;bottom:0;left:0;">-->
+        <!--            <van-col span="6">-->
+        <!--                <van-button type="default" class="border-0"><a class="text-secondary" th:href="'tel:' + ${T(com.cgnib.iqb.mapping.constant.CommonConstant).SERVICE_MOBILE}">-->
+        <!--                    <van-icon name="phone-o"></van-icon>-->
+        <!--                    <div style="font-size: 0.14rem">电话咨询</div>-->
+        <!--                </a></van-button>-->
+        <!--            </van-col>-->
+        <!--            <van-col span="6">-->
+        <!--                <div class="text-center pt-3 text-warning"><span style="font-size: .12rem">¥</span><span style="font-size: .24rem;">325</span></div>-->
+        <!--            </van-col>-->
+        <!--            <van-col span="12">-->
+        <!--                <van-button type="warning" class="rounded-0" block style="font-size: .24rem;" url="/wechat/cgnLife/edit">立即投保</van-button>-->
+        <!--            </van-col>-->
+        <!--        </van-row>-->
+    </div>
+    <script>
+        let $vue = new Vue({
+            el: '#app',
+            mounted() {
+                // cgnLifeOrderData.reset();
+            },
+            data: {
+                tabActive: 0,
+                activeName: 1,
+                price: 325,
+                tipBeforeInsure: false,
+                checked: false,
+                payload: {},// init from create()
+            },
+            methods: {
+                agreeOrNot: function () {
+                    //todo check agree
+                    this.tipBeforeInsure = false;
+                    location.href = "/wechat/[(${product})]/edit";
+                }
+            },
+            created(){
+                axios.post("/wechat/[(${product})]/user/init/payload.json")
+                    .then(res => {
+                        this.payload = res.data.data;
+                        //从本地session中恢复数据
+                        Object.entries(getOrderPayload([[${product}]]).all()).forEach(([key, value]) => Vue.set(this.payload, key, value))
+                    })
+                    .catch(error => vant.Toast(error.response.data.message));
+            },
+        });
+    </script>
+</main>
+</html>
