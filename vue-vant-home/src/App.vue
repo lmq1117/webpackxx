@@ -2,7 +2,7 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <van-button type="danger">点我</van-button>
+    <van-button type="danger" @click="haha">点我</van-button>
 
     <van-button type="primary" text="组件调用" @click="showNotify" />
     <van-notify v-model="show" type="success">
@@ -14,6 +14,8 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
+
+import EXIF from 'exif-js'
 
 export default {
   name: "App",
@@ -31,6 +33,9 @@ export default {
       setTimeout(() => {
         this.show = false;
       }, 2000);
+    },
+    haha(){
+      EXIF.getData()
     },
   },
 };
