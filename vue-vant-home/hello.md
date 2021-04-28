@@ -1,6 +1,6 @@
 
 
-
+https://www.jianshu.com/p/983f2f226579
 
 点击按钮--Enter Lincense Data---Continue(这里不填写任何东西）---EnterLicense Manually--分别输入如下(按continue继续）---Done
 
